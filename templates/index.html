@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="image-container">
+
+        <img id="interactive-image" src="https://source.unsplash.com/random/400x400" alt="Random Image">
+                <canvas id="paint-canvas" width="400" height="400"></canvas>
+
+    </div>
+    <div id="timer">Time left: 60 seconds</div>
+    
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

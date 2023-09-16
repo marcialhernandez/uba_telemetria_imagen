@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    position: relative;
+}
+
+#image-container {
+    margin: 20px;
+    z-index: 1;
+}
+
+#interactive-image {
+    cursor: crosshair;
+    z-index: 2;
+}
+
+#timer {
+    margin-top: 10px;
+}
+
+#paint-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allow interactions with the image beneath */
+    z-index: 3; /* Ensure the canvas is above the image */
+    mix-blend-mode: multiply; /* Apply a blending mode to make the paint visible on the image */
+}
