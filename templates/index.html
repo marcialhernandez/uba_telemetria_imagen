@@ -3,18 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Image</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Interactive Canvas</title>
+    <style>
+        #paint-canvas {
+            cursor: crosshair;
+            margin-left: auto;
+            margin-right: auto;
+            border: 5px solid black;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            mix-blend-mode: multiply;
+        }
+
+        #timer {
+            margin-top: 10px;
+            float: right;
+        }
+
+        #next-image-button {
+            margin-top: 20px;
+            float: right;
+        }
+    </style>
 </head>
 <body>
-    <div id="image-container">
-
-        <img id="interactive-image" src="https://source.unsplash.com/random/400x400" alt="Random Image">
-                <canvas id="paint-canvas" width="400" height="400"></canvas>
-
+    <canvas id="paint-canvas" width="400" height="400"></canvas>
+    <div id="container">
+        <img id="interactive-image" src="https://source.unsplash.com/random/400x400" alt="Random Image" style="position: absolute; z-index: 1;">
     </div>
+
     <div id="timer">Time left: 60 seconds</div>
-    
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+    <button id="next-image-button">Next Image</button>
+
+    <script>
+        const paintCanvas = document.querySelector('#paint-canvas');
+        const ctx = paintCanvas.getContext('2d');
+
+        // Add an event listener for the mousedown event
+        paintCanvas.addEventListener('mousedown', () => {
+            // Set the flag to indicate that the user is painting
+            isPainting = true;
+        });
+
+        // Add an event listener for the mouseup event
+        paintCanvas.addEventListener('mouseup', () => {
+            // Set the flag to indicate that the user is not painting
+            isPainting = false;
+        });
+
+        // Add an event listener for the mousemove event
+        paintCanvas.addEventListener('mousemove', (event) => {
+            // If the user is painting, draw a red circle at the mouse coordinates
+            if (isPainting) {
+                ctx.fillStyle = 'red';
+                ctx.beginPath();
+                ctx.arc(event.clientX, event.clientY, 10, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        });
+
+        // Start a timer for 60 seconds
+        let timer = 60;
+        const timerInterval = setInterval(() => {
+            if (timer > 0) {
+                timer--;
+                document.querySelector('#timer').textContent = `Time left: ${timer} seconds`;
+            } else {
+                clearInterval(timerInterval);
+                alert('Time is up!');
+            }
+        }, 1000);
+
+        // Add an event listener for the "next image" button
+        document.querySelector('#next-image-button').addEventListener('click', () => {
+            // Load a new random image
+            document.querySelector('#interactive-image').src = `https://source.unsplash.com/random/400x400`;
+            // Clear the paint canvas
+            ctx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+            // Reset the timer
+            timer = 60;
+        });
+
+        // Set the isPainting flag to false by default
+        let isPainting = false;
+    </script>
 </body>
 </html>
